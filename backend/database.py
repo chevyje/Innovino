@@ -47,7 +47,7 @@ def connect_db():
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
 
-def query_db(query):
+def query_db(query: str, params: tuple = None):
     try:
         # Create connection and cursor
         conn = psycopg2.connect(
@@ -59,7 +59,7 @@ def query_db(query):
         cur = conn.cursor()
 
         # Execute query
-        cur.execute(query)
+        cur.execute(query, params)
         conn.commit()
 
         # Close connection
@@ -84,3 +84,25 @@ def select_db(query: str, params: tuple = None):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
         return []
+
+def insert_db(query: str, params: tuple = None):
+    try:
+        conn = psycopg2.connect(
+            dbname=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            host=DB_HOST
+        )
+        cur = conn.cursor()
+
+        cur.execute(query, params)
+        result = cur.fetchone()
+        user_id = result[0] if result else None
+        conn.commit()
+        return user_id or 0
+    except (Exception, psycopg2.errors.UniqueViolation) as error:
+        print("Error while connecting to PostgreSQL", error)
+        return -1
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+        return -2
