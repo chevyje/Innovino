@@ -68,3 +68,19 @@ def query_db(query):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
 connect_db()
+
+def select_db(query: str, params: tuple = None):
+    try:
+        conn = psycopg2.connect(
+            dbname=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            host=DB_HOST
+        )
+        cur = conn.cursor()
+
+        cur.execute(query, params)
+        return cur.fetchall()
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+        return []
