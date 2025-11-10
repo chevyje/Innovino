@@ -2,6 +2,8 @@
 
 To start the server do ```python -m fastapi dev api.py``` when in the backend folder
 
+To start the frontend do ```npm run dev``` when in the frontend folder
+
 To get the api documentation go to the api url and go to /docs for the fast api swagger documentation
 
 [Http codes](
