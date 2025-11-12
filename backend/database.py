@@ -67,7 +67,6 @@ def query_db(query: str, params: tuple = None):
         conn.close()
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
-connect_db()
 
 def select_db(query: str, params: tuple = None):
     try:

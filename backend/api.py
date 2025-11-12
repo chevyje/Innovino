@@ -1,8 +1,16 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.routes.users import router as users_router
+import database
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    database.connect_db()
+    yield
+    print("Disable API")
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
