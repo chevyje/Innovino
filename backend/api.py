@@ -19,7 +19,11 @@ class ApiKeyException(BaseModel):
     method: str
 
 key_exceptions: List[ApiKeyException] = [
-    ApiKeyException(method="POST", path="/api/users/auth")
+    ApiKeyException(method="POST", path="/api/users/auth"),
+    
+    # Allow the docs to be read
+    ApiKeyException(method="GET", path="/docs"),
+    ApiKeyException(method="GET", path="/openapi.json")
 ]
 
 @asynccontextmanager
