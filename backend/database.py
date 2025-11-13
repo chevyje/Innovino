@@ -96,9 +96,9 @@ def insert_db(query: str, params: tuple = None):
 
         cur.execute(query, params)
         result = cur.fetchone()
-        user_id = result[0] if result else None
+        response = result[0] if result else None
         conn.commit()
-        return user_id or 0
+        return response or 0
     except (Exception, psycopg2.errors.UniqueViolation) as error:
         print("Error while connecting to PostgreSQL", error)
         return -1
