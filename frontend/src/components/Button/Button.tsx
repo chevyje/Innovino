@@ -11,7 +11,7 @@ export default function Button({ title, variant }: Props) {
     const classes = `${Style.button} ${Style[btnVariant]}`;
     return (
         <div className={Style.buttonContainer}>
-            <button title={`${btnTitle}`} className={`${classes}`}>{btnTitle}</button>
+            <button className={`${classes}`}>{btnTitle}</button>
         </div>
     );
 }

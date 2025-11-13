@@ -5,6 +5,7 @@ export default function TestPage() {
     return (
         <div className={Style.container}>
             <Button title={"Button"}></Button>
+            <Button title={"Button"} variant={"secondary"}></Button>
         </div>
     );
 }
