@@ -8,8 +8,6 @@ class User(BaseModel):
     username: str
     password: str
 
-
-
 router = APIRouter(prefix="/users", tags=["users"])
 
 @router.post("/auth")
