@@ -6,6 +6,7 @@ export default function TestPage() {
         <div className={Style.container}>
             <Button title={"Button"}></Button>
             <Button title={"Button"} variant={"secondary"}></Button>
+            <Button title={"Button"} variant={"tertiary"}></Button>
         </div>
     );
 }
