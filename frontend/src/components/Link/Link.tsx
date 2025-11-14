@@ -1,16 +1,16 @@
-import Style from "./button.module.css"
+import Style from "./link.module.css"
 
 interface Props {
     title?: string,
-    action?: any;
+    path?: string;
 }
 
-export default function Button({ title, action }: Props) {
+export default function Link({ title, path }: Props) {
     const btnTitle : string = title ?? "Link"
-    const classes = `${Style.button}`;
+    const classes = `${Style.link}`;
     return (
         <div className={Style.buttonContainer}>
-            <a className={`${classes}`} onClick={action}>{btnTitle}</a>
+            <a className={`${classes}`} href={`${path}`}>{btnTitle}</a>
         </div>
     );
 }
