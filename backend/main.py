@@ -8,11 +8,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 # Routers
-from backend.routes.users import router as users_router
+from backend.routers.users import router as users_router
 
 # Internal codes
 from database import connect_db
-from session import check_session
+from backend.services.session import check_session
 
 class ApiKeyException(BaseModel):
     path: str

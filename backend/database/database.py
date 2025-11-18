@@ -13,22 +13,13 @@ DB_HOST: str = os.getenv("DB_HOST")
 
 def connect_db():
     try:
-        # connect to the database
         print('Connecting to the PostgreSQL database...')
-        connection = psycopg2.connect(
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            host=DB_HOST)
-
-        # create a cursor for communication
+        connection = create_connection()
         cur = connection.cursor()
 
         # get database version
         print('PostgreSQL database version:')
         cur.execute('SELECT version()')
-
-        # print database version
         db_version = cur.fetchone()
         print(db_version)
 
@@ -39,8 +30,6 @@ def connect_db():
             connection.commit()
             print("Successfully created all the tables.")
 
-
-        # end connection
         cur.close()
         connection.close()
         print('Successfully connected to PostgreSQL database.')
@@ -49,20 +38,12 @@ def connect_db():
 
 def query_db(query: str, params: tuple = None):
     try:
-        # Create connection and cursor
-        conn = psycopg2.connect(
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            host=DB_HOST
-        )
+        conn = create_connection()
         cur = conn.cursor()
 
-        # Execute query
         cur.execute(query, params)
         conn.commit()
 
-        # Close connection
         cur.close()
         conn.close()
     except (Exception, psycopg2.Error) as error:
@@ -70,12 +51,7 @@ def query_db(query: str, params: tuple = None):
 
 def select_db(query: str, params: tuple = None):
     try:
-        conn = psycopg2.connect(
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            host=DB_HOST
-        )
+        conn = create_connection()
         cur = conn.cursor()
 
         cur.execute(query, params)
@@ -86,12 +62,7 @@ def select_db(query: str, params: tuple = None):
 
 def insert_db(query: str, params: tuple = None):
     try:
-        conn = psycopg2.connect(
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            host=DB_HOST
-        )
+        conn = create_connection()
         cur = conn.cursor()
 
         cur.execute(query, params)
@@ -101,7 +72,19 @@ def insert_db(query: str, params: tuple = None):
         return response or 0
     except (Exception, psycopg2.errors.UniqueViolation) as error:
         print("Error while connecting to PostgreSQL", error)
-        return -1
+        return None
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
-        return -2
+        return None
+
+def create_connection():
+    try:
+        return psycopg2.connect(
+            dbname=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            host=DB_HOST
+        )
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+        return None
