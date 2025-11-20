@@ -24,7 +24,6 @@ export default function loginPage() {
 
                                 <p className={Style.forgotPassword}>Wachtwoord vergeten?</p>
                             </div>
-
                             <button className={Style.button}>Log in</button>
 
                         </form>
