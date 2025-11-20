@@ -17,7 +17,14 @@ def authenticate_user(data: LoginRequest) -> JSONResponse:
 
     session_id = create_session(server_data.id)
     session: Session = get_session(session_id)
-    return JSONResponse(status_code=200, content={"message": "Login successful", "session": session})
+    return JSONResponse(status_code=200, content={
+        "message": "Login successful",
+        "session": {
+            "session_id": session.id,
+            "user_id": session.user_id,
+            "created_at": session.created_at.isoformat(),
+            "expires_at": session.expires_at.isoformat()
+        },})
 
 def logout(session_id: str) -> JSONResponse:
     session: Session = get_session(session_id)

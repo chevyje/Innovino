@@ -6,7 +6,6 @@ def get_user_from_username(username: str) -> User | None:
     if row is None:
         return None
 
-    print(row)
     return User(
         id=row[0],
         password=row[1],

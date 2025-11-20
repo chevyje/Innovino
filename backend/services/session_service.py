@@ -21,7 +21,8 @@ def invalidate_session(session_id: str):
     update_expires_at(session_id, expire_date)
 
 def get_session(session_id: str) -> Session | None:
-    row = get_session(session_id)
+    current_time = datetime.now(timezone.utc)
+    row = get_valid_session_by_id(session_id, current_time)
     if row is None:
         return None
 

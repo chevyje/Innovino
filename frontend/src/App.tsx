@@ -6,9 +6,9 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="/" element={<LoginPage />} />
                 <Route path="/test" element={<TestPage />} />
             </Routes>
-            <LoginPage />
         </BrowserRouter>
     );
 }
