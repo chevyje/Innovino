@@ -22,3 +22,7 @@
     color: black;
     font-size: var(--body-text-size);
 }
+
+.cards {
+    margin-top: 5rem;
+}
