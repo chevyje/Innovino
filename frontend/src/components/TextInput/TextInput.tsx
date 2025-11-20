@@ -9,9 +9,10 @@ interface TextInputProps {
 }
 
 export default function TextInput({ label, name, type = "text", value, onChange }: TextInputProps) {
+    const input_label: string = label ?? "label"
     return (
         <div className={Style.inputGroup}>
-            <p className={Style.tag}>{label}</p>
+            <p className={Style.tag}>{input_label}</p>
             <input
                 type={type}
                 name={name}
