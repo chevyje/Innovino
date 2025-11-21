@@ -1,11 +1,16 @@
-import LoginPage from "./loginPagina/login.tsx";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import TestPage from "./testPage/test.tsx";
+import LoginPage from "./loginPagina/login.tsx"
 
 function App() {
-  return (
-    <>
-      <LoginPage />
-    </>
-  )
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/test" element={<TestPage />} />
+            </Routes>
+            <LoginPage />
+        </BrowserRouter>
+    );
 }
 
-export default App
+export default App;

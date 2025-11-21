@@ -1,0 +1,28 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.header{
+    color: black;
+    font-size: var(--header-text-size);
+}
+
+.subtitle {
+    color: black;
+    font-size: var(--subtitle-text-size);
+}
+
+.body {
+    color: black;
+    font-size: var(--body-text-size);
+}
+
+.cards {
+    margin-top: 5rem;
+}
