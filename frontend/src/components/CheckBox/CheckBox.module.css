@@ -1,0 +1,41 @@
+.checkboxWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #000;
+    border-radius: 4px;
+    background-color: #F4F4F4;
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox:checked {
+    background-color: #e0412b;
+    border-color: #e0412b;
+}
+
+.checkbox:checked::after {
+    content: "✓";
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    top: -1px;
+    left: 3px;
+}
+
+.label {
+    font-size: 14px;
+    color: black;
+}
+
+.label:hover{
+    color: #e0412b;
+    text-decoration: underline;
+}
