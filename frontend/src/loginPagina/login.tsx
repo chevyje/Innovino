@@ -1,5 +1,4 @@
 import Style from "./login.module.css"
-import bg from "../assets/inlog-background.jpg"
 import type {LoginRequest} from "../models/user_model.ts";
 import {authenticate} from "../requests/user_requests.ts"
 import Logo from "../assets/Cuimed-logo.jpg"
