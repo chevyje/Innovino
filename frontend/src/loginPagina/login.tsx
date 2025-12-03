@@ -56,8 +56,9 @@ export default function LoginPage() {
                             <CheckBox name="remember" label="Gegevens onthouden" />
                             <Link title="Wachtwoord vergeten?" path="/wachtwoord-vergeten" />
                         </div>
-                        <Button title="Log in" />
-
+                        <div className={Style.btnContainer}>
+                            <Button title="Log in" />
+                        </div>
                     </form>
                 </Card>
 

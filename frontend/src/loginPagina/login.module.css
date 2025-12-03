@@ -42,3 +42,9 @@
     justify-content: center;
     align-items: center;
 }
+
+.btnContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
