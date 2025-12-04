@@ -33,6 +33,7 @@
 .label {
     font-size: 14px;
     color: black;
+    user-select: none;
 }
 
 .label:hover{
