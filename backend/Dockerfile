@@ -27,9 +27,9 @@ USER appuser
 
 COPY . /app/backend
 
-EXPOSE 8000
+EXPOSE 8001
 
-CMD ["fastapi", "run", "backend/main.py", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["fastapi", "run", "backend/main.py", "--host", "0.0.0.0", "--port", "8001"]
 
 # Prod Build
 FROM python:${PYTHON_VERSION}-slim as prod
