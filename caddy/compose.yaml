@@ -1,7 +1,10 @@
+  GNU nano 7.2                                                                                    caddy/compose.yaml
 services:
   caddy:
     image: caddy:2.10.2-alpine
     restart: unless-stopped
+    networks:
+      - caddy
     ports:
       - "80:80"
       - "443:443"
@@ -17,6 +20,6 @@ volumes:
   caddy_config:
 
 networks:
-  default:
+  caddy:
     external: true
-    name: caddy
+
