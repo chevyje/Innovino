@@ -1,5 +1,7 @@
+name: innovino_${TARGET}
 services:
   frontend:
+    container_name: ${TARGET}-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -8,6 +10,7 @@ services:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
 
   backend:
+    container_name: ${TARGET}-backend
     build:
       context: ./backend
       dockerfile: Dockerfile
