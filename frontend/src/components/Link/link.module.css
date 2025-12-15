@@ -1,6 +1,7 @@
 .link {
     color: black;
     text-decoration: underline;
+    user-select: none;
 }
 
 .link:hover {

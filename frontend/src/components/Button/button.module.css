@@ -17,11 +17,11 @@
 
 .primary:hover {
     background-color: var(--primary-color-hover);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
 .primary:active {
-    box-shadow: 0 3px 8px 0 rgba(0,0,0,0.4);
+    box-shadow: 0 3px 8px 0 rgba(0,0,0,0.5);
 }
 
 .secondary {
