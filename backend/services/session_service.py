@@ -10,11 +10,11 @@ def create_session(user_id: int) -> str:
     return session_id
 
 def validate_session(session_id: str) -> bool:
-    current_time = datetime.now(timezone.utc)
-    sessions = get_valid_session_by_id(session_id, current_time)
-    if len(sessions) == 0:
+    if not session_id:
         return False
-    return True
+    current_time = datetime.now(timezone.utc)
+    session = get_valid_session_by_id(session_id, current_time)
+    return session is not None
 
 def invalidate_session(session_id: str):
     expire_date = datetime(1900, 1,1, tzinfo=timezone.utc)
