@@ -1,4 +1,3 @@
-from backend.routers.user_router import router as user_router
 from backend.database.database import connect_db
 from backend.services.security_service import handle_api_key_middleware
 
@@ -9,9 +8,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.routers.user_router import router as user_router
 from backend.routers.product_router import router as product_router
 from backend.routers.cart_router import router as cart_router
-...
-
-
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -33,7 +29,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(user_router, prefix="/api")
 app.include_router(user_router, prefix="/api")
 app.include_router(product_router, prefix="/api")
 app.include_router(cart_router, prefix="/api")

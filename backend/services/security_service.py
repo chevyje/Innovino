@@ -19,32 +19,16 @@ keyless_routes: List[KeylessRoute] = [
     KeylessRoute(method="GET", path="/openapi.json")
 ]
 
-# async def handle_api_key_middleware(request: Request, call_next):
-#     # Check if route is in the exception and continue
-#     for x in keyless_routes:
-#         if x.method == request.method and x.path == request.url.path:
-#             return await call_next(request)
-
-#     # Check if the api key is valid
-#     api_key = request.headers.get("x-api-key")
-#     if validate_session(api_key):
-#         print("Key is valid")
-#         return await call_next(request)
-
-#     return JSONResponse(status_code=401, content={"message": "Invalid API key"})
 async def handle_api_key_middleware(request: Request, call_next):
-    req_path = request.url.path.rstrip("/") or "/"
-
-    # Check keyless routes (prefix match voor products)
+    # Check if route is in the exception and continue
     for x in keyless_routes:
-        if x.method == request.method:
-            if x.path.rstrip("/") == req_path:
-                return await call_next(request)
-            if x.path == "/api/products" and req_path.startswith("/api/products"):
-                return await call_next(request)
+        if x.method == request.method and x.path == request.url.path:
+            return await call_next(request)
 
+    # Check if the api key is valid
     api_key = request.headers.get("x-api-key")
     if validate_session(api_key):
+        print("Key is valid")
         return await call_next(request)
 
     return JSONResponse(status_code=401, content={"message": "Invalid API key"})

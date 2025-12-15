@@ -1,14 +1,10 @@
 from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
-from pydantic import BaseModel, conint
-from backend.services.cart_service import list_cart, add_or_update_item, remove_item, clear
+from backend.services.cart_service import list_cart, add_item, update_item, remove_item, clear
 from backend.services.session_service import get_session
+from backend.models.cart_model import CartItemIn, CartResponse
 
 router = APIRouter(prefix="/cart", tags=["cart"])
-
-class CartItemIn(BaseModel):
-    product_id: int
-    quantity: conint(gt=0)
 
 def _get_user_id(x_api_key: Annotated[str | None, Header()] = None) -> int:
     session = get_session(x_api_key)
@@ -16,23 +12,21 @@ def _get_user_id(x_api_key: Annotated[str | None, Header()] = None) -> int:
         raise HTTPException(status_code=401, detail="Invalid session")
     return session.user_id
 
-@router.get("/")
+@router.get("/", response_model=CartResponse)
 def get_cart(x_api_key: Annotated[str | None, Header()] = None):
     user_id = _get_user_id(x_api_key)
-    items = list_cart(user_id)
-    total = sum(i["line_total"] for i in items)
-    return {"items": items, "total": total}
+    return list_cart(user_id)
 
 @router.post("/items")
 def upsert_item(payload: CartItemIn, x_api_key: Annotated[str | None, Header()] = None):
     user_id = _get_user_id(x_api_key)
-    add_or_update_item(user_id, payload.product_id, payload.quantity)
+    add_item(user_id, payload.product_id, payload.quantity)
     return {"message": "ok"}
 
 @router.patch("/items/{product_id}")
 def update_qty(product_id: int, payload: CartItemIn, x_api_key: Annotated[str | None, Header()] = None):
     user_id = _get_user_id(x_api_key)
-    add_or_update_item(user_id, product_id, payload.quantity)
+    update_item(user_id, product_id, payload.quantity)
     return {"message": "ok"}
 
 @router.delete("/items/{product_id}")

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './productOverview.module.css';
 import { getCookie } from '../utils/cookies';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../utils/requests';
 
 interface Product {
     id: number;
@@ -12,7 +13,7 @@ interface Product {
     category?: string | null;
 }
 
-const API_URL = 'http://127.0.0.1:8000/api/products';
+const API_URL = `${baseUrl}/products`;
 
 const priceFormatter = new Intl.NumberFormat('nl-NL', {
     style: 'currency',

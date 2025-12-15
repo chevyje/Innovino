@@ -1,5 +1,5 @@
 from typing import List, Tuple, Any
-from backend.database import select_db, insert_db, query_db
+from backend.database import select_db, query_db
 
 def get_cart_items(user_id: int) -> List[Tuple[Any]]:
     return select_db(
@@ -14,16 +14,23 @@ def get_cart_items(user_id: int) -> List[Tuple[Any]]:
         (user_id,)
     ) or []
 
-def upsert_cart_item(user_id: int, product_id: int, quantity: int):
-    # quantity > 0
+def insert_cart_item(user_id: int, product_id: int, quantity: int):
     return query_db(
         """
         INSERT INTO cart_items (user_id, product_id, quantity)
         VALUES (%s, %s, %s)
-        ON CONFLICT (user_id, product_id)
-        DO UPDATE SET quantity = EXCLUDED.quantity, updated_at = now()
         """,
         (user_id, product_id, quantity)
+    )
+
+def update_cart_item(user_id: int, product_id: int, quantity: int):
+    return query_db(
+        """
+        UPDATE cart_items
+        SET quantity = %s, updated_at = now()
+        WHERE user_id = %s AND product_id = %s
+        """,
+        (quantity, user_id, product_id)
     )
 
 def delete_cart_item(user_id: int, product_id: int):
