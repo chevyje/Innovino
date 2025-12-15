@@ -7,6 +7,12 @@ from fastapi.responses import JSONResponse
 
 keyless_routes: List[KeylessRoute] = [
     KeylessRoute(method="POST", path="/api/users/auth"),
+    KeylessRoute(method="POST", path="/api/users"),
+    KeylessRoute(method="POST", path="/api/users/"),
+    KeylessRoute(method="GET", path="/api/products"),
+    KeylessRoute(method="GET", path="/api/products/"),
+
+
 
     # Allow the docs to be read
     KeylessRoute(method="GET", path="/docs"),
