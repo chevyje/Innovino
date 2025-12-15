@@ -23,7 +23,7 @@ async def check_api_key(request: Request, call_next):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"], # moet http://localhost:3001 zijn
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

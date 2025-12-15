@@ -1,18 +1,24 @@
-import Style from "./button.module.css"
+import Style from "./button.module.css";
 
 interface Props {
-    title?: string,
-    variant?: string,
-    action?: any,
+    title?: string;
+    variant?: string;
+    type?: "button" | "submit" | "reset";
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    disabled?: boolean;
 }
 
-export default function Button({ title, variant, action }: Props) {
-    const btnVariant : string = variant ?? "primary";
-    const btnTitle : string = title ?? "Button"
-    const classes = `${Style.button} ${Style[btnVariant]}`;
+export default function Button({title = "Button", variant = "primary", type = "button", onClick, disabled,}: Props) {
+    const classes = `${Style.button} ${Style[variant] ?? ""}`;
+
     return (
-        <div className={Style.buttonContainer}>
-            <button className={`${classes}`} onClick={action}>{btnTitle}</button>
-        </div>
+        <button
+            className={classes}
+            type={type}
+            onClick={onClick}
+            disabled={disabled}
+        >
+            {title}
+        </button>
     );
 }
