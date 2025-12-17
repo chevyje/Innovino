@@ -4,6 +4,9 @@ import Link from "../components/Link/Link.tsx";
 import Card from "../components/Card/Card.tsx";
 import Banner from "../components/Banner/Banner.tsx";
 import Page from "../components/Page/Page.tsx";
+import ProductImages from "../components/ProductImages/ProductImages"
+import testimg1 from "../assets/inlog-background.jpg";
+import testproductimg1 from "../assets/testproductimg1.jpg"
 
 export default function TestPage() {
     return (
@@ -34,10 +37,13 @@ export default function TestPage() {
                     <Button title={"Button"} variant={"secondary"}></Button>
                     <Button title={"Button"} variant={"tertiary"}></Button>
                 </div>
+                <div style={{ padding: "40px", maxWidth: "800px" }}>
+                    <ProductImages
+                        images={[testimg1, testproductimg1]}
+                        alt="Test product"
+                   />
+                 </div>
             </Page>
-
-
         </>
-
     );
 }
