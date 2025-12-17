@@ -1,0 +1,55 @@
+.page {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding: 40px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.mainImage {
+    width: 80%;
+    margin: 0 auto;
+    border: 3px solid #CCCCCC;
+    border-radius: 15px;
+    user-select: none;
+}
+
+.thumbnailRow {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 10px;
+    opacity: 0.7;
+    cursor: pointer;
+    user-select: none;
+}
+
+.thumbnail.active {
+    opacity: 1;
+    border: 3px solid var(--primary-color);
+}
+
+.priceInfo {
+    text-align: center;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.amount {
+    font-size: 14px;
+    color: #555;
+}
