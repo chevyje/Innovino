@@ -1,4 +1,6 @@
 import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Style from "./login.module.css";
 import type { LoginRequest } from "../models/user_model.ts";
 import { authenticate } from "../requests/user_requests.ts";
@@ -13,6 +15,7 @@ import Link from "../components/Link/Link";
 
 export default function LoginPage() {
     const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -26,7 +29,14 @@ export default function LoginPage() {
         setError(null);
 
         try {
-            await authenticate(data);
+            const res = await authenticate(data);
+
+            if (res?.session?.session_id) {
+                navigate("/products");
+                return;
+            }
+
+            setError("Controleer je gebruikersnaam en wachtwoord.");
         } catch {
             setError("Controleer je gebruikersnaam en wachtwoord.");
         }
@@ -36,8 +46,6 @@ export default function LoginPage() {
         <div className={Style.container}>
             <img src={Logo} className={Style.logo} alt="Cuimed logo" />
             <div className={Style.loginContainer}>
-
-
                 {error && (
                     <div className={Style.errorContainer}>
                         <Banner title="Inloggen mislukt" variant="warning">
@@ -45,7 +53,6 @@ export default function LoginPage() {
                         </Banner>
                     </div>
                 )}
-
 
                 <Card>
                     <form onSubmit={handleSubmit} className={Style.loginForm}>
@@ -56,12 +63,12 @@ export default function LoginPage() {
                             <CheckBox name="remember" label="Gegevens onthouden" />
                             <Link title="Wachtwoord vergeten?" path="/wachtwoord-vergeten" />
                         </div>
+
                         <div className={Style.btnContainer}>
-                            <Button title="Log in" />
+                            <Button title="Log in" type="submit" />
                         </div>
                     </form>
                 </Card>
-
             </div>
         </div>
     );
