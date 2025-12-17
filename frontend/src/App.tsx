@@ -37,6 +37,7 @@ import { useEffect, useState } from "react";
 import { getCookie } from "./utils/cookies";
 import LoginPage from "./loginPagina/login.tsx";
 import TestPage from "./testPage/test.tsx";
+import ProductPagina from "./productPagina/productpagina.tsx";
 import ProductOverview from "./products/ProductOverview";
 import ProductDetail from "./products/ProductDetail";
 import CartPage from "./cart/CartPage";
@@ -65,6 +66,7 @@ function AppRoutes() {
       <Route path="/products/:id" element={<ProductDetailRoute sessionId={sessionId} />} />
       <Route path="/test" element={<TestPage />} />
       <Route path="/cart" element={<CartPage />} />
+      <Route path="/product" element={<ProductPagina />} />
     </Routes>
   );
 }
