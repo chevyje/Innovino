@@ -6,6 +6,7 @@
 .navbar {
     margin: 2rem;
     padding-bottom: 1rem;
+    border-bottom: 2px solid #c5c5c5;
 }
 
 .logo {
