@@ -1,19 +1,22 @@
+name: innovino_${TARGET}
 services:
   frontend:
+    container_name: ${TARGET}-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      target: prod
+      target: ${TARGET}
     ports:
-      - "3000:3000"
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
 
   backend:
+    container_name: ${TARGET}-backend
     build:
       context: ./backend
       dockerfile: Dockerfile
-      target: prod
+      target: ${TARGET}
     ports:
-      - "8000:8000"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     env_file:
       - ./backend/.env
     depends_on:
@@ -22,11 +25,16 @@ services:
   db:
     image: postgres:18
     env_file:
-      - ./backend/.env.db
+      - ./backend/.env
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:5432"
     volumes:
       - db-data:/var/lib/postgresql
 
 volumes:
   db-data:
+
+networks:
+  default:
+    external: true
+    name: caddy
