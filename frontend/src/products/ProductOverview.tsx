@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './productOverview.module.css';
-import { getCookie } from '../utils/cookies';
-import { Link } from 'react-router-dom';
-import { baseUrl } from '../utils/requests';
+import Page from '../components/Page/Page';
+import Card from '../components/Card/Card';
+import Banner from '../components/Banner/Banner';
 
 interface Product {
     id: number;
@@ -11,84 +11,81 @@ interface Product {
     price: number;
     description?: string | null;
     category?: string | null;
+    amount?: string | null;
 }
-
-const API_URL = `${baseUrl}/products`;
 
 const priceFormatter = new Intl.NumberFormat('nl-NL', {
     style: 'currency',
     currency: 'EUR',
 });
 
-interface ProductOverviewProps {
-    sessionId: string;
-}
+const mockProducts: Product[] = [
+    {
+        id: 1,
+        name: 'Anijszaad',
+        price: 5.52,
+        description: 'Beschikbaar: 6.000 stuks',
+        image_url: 'https://placehold.co/400',
+        category: 'Specerijen',
+        amount: "120g"
+    },
+    {
+        id: 2,
+        name: 'AOSA zeewier sojasaus',
+        price: 31.0,
+        description: 'Beschikbaar: 4.000 stuks',
+        image_url: 'https://placehold.co/400',
+        category: 'Sauzen',
+        amount: "720ML"
+    },
+    {
+        id: 3,
+        name: 'DOMAINE 2019',
+        price: 31.23,
+        description: 'Beschikbaar: 6.000 stuks',
+        image_url: 'https://placehold.co/400',
+        category: 'Wijn',
+        amount: "750ML"
+    },
+    {
+        id: 4,
+        name: 'Whisky, New Path Edition',
+        price: 37.92,
+        description: 'Beschikbaar: 23.000 stuks',
+        image_url: 'https://placehold.co/400',
+        category: 'Whisky',
+        amount: "700ML"
+    },
+];
 
-export default function ProductOverview({ sessionId }: ProductOverviewProps) {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        async function fetchProducts() {
-            setLoading(true);
-            setError(null);
-            try {
-                const sid = sessionId || getCookie('session_id') || '';
-                const response = await fetch(API_URL, {
-                    headers: sid ? { 'x-api-key': sid } : {},
-                });
-
-                if (response.status === 401) {
-                    localStorage.removeItem('session_id');
-                    window.location.href = '/';
-                    return;
-                }
-
-                if (!response.ok) {
-                    const body = await response.json().catch(() => ({}));
-                    throw new Error(body?.message || 'Kon producten niet laden');
-                }
-
-                const data: Product[] = await response.json();
-                setProducts(data);
-            } catch (err) {
-                setError((err as Error).message);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchProducts();
-    }, [sessionId]);
+export default function ProductOverview() {
+    const [products] = useState<Product[]>(mockProducts);
+    const [error] = useState<string | null>(null);
 
     const handleCardClick = (id: number) => {
         window.location.href = `/products/${id}`;
     };
 
     return (
-        <main className={styles.page}>
-            <div className={styles.headerRow}>
-                <div>
-                    <h1 className={styles.title}>Productoverzicht</h1>
-                    <p className={styles.subtitle}>
-                        {loading ? 'Producten worden geladen...' : `${products.length} producten`}
-                    </p>
+        <Page>
+            <main className={styles.page}>
+                <div className={styles.headerRow}>
+                    <div>
+                        <p className={styles.subtitle}>
+                            {`${products.length} producten`}
+                        </p>
+                    </div>
                 </div>
-                <Link to="/cart" className={styles.cartLink}>
-                    Winkelmand
-                </Link>
-            </div>
 
-            {error && <p className={styles.error}>{error}</p>}
-            {!loading && !error && products.length === 0 && (
-                <p className={styles.info}>Geen producten gevonden</p>
-            )}
+                {error && (
+                    <Banner title="Foutmelding" variant="warning">
+                        {error}
+                    </Banner>
+                )}
 
-            {!loading && !error && products.length > 0 && (
                 <section className={styles.grid}>
                     {products.map((product) => (
-                        <article
+                        <Card
                             key={product.id}
                             className={styles.card}
                             role="button"
@@ -97,19 +94,25 @@ export default function ProductOverview({ sessionId }: ProductOverviewProps) {
                             onKeyDown={(e) => e.key === 'Enter' && handleCardClick(product.id)}
                         >
                             {product.image_url && (
-                                <img src={product.image_url} alt={product.name} loading="lazy" />
+                                <img
+                                    src={product.image_url}
+                                    alt={product.name}
+                                    className={styles.cardImage}
+                                    loading="lazy"
+                                />
                             )}
                             <div className={styles.cardBody}>
-                                <h2>{product.name}</h2>
-                                <p className={styles.price}>{priceFormatter.format(product.price)}</p>
-                                {product.description && (
-                                    <p className={styles.description}>{product.description}</p>
-                                )}
+                                <h2 className={styles.cardTitle}>{product.name}</h2>
+
+                                <div className={styles.metaRow}>
+                                    <p className={styles.price}>{priceFormatter.format(product.price)}</p>
+                                    {product.amount && <p className={styles.amount}>{product.amount}</p>}
+                                </div>
                             </div>
-                        </article>
+                        </Card>
                     ))}
                 </section>
-            )}
-        </main>
+            </main>
+        </Page>
     );
 }

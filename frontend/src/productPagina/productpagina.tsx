@@ -58,16 +58,18 @@ import Button from "../components/Button/Button";
 import Page from "../components/Page/Page";
 import testImg from "../assets/testproductimg1.jpg";
 
-export default function ProductPagina() {
-  return (
-    <Page>
-      <div className={style.page}>
-        <div className={style.column}>
-          <Button
-            title="<- Terug"
-            variant="secondary"
-            onClick={() => window.history.back()}
-          />
+export default function ProductPagina () {
+    return(
+        <>
+            <Page>
+             <div className={style.page}>
+                {/* KOLOM 1 */}
+                <div className={style.column}>
+                    <Button
+                        title="← Terug"
+                        variant="secondary"
+                        onClick={() => window.history.back()}
+                    />
 
           <img src={testImg} className={style.mainImage} alt="Product afbeelding" />
 
