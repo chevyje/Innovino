@@ -167,9 +167,7 @@ export default function ProductOverview() {
         <Page>
             <main className={styles.page}>
                 <div className={styles.headerRow}>
-                    <div>
-                        <p className={styles.subtitle}>{`${filteredProducts.length} producten`}</p>
-                    </div>
+
                 </div>
 
                 {error && (
@@ -181,6 +179,7 @@ export default function ProductOverview() {
                 <div className={styles.container}>
                     <section className={styles.filterContainer}>
                         <h2 className={styles.filterTitle}>Filters</h2>
+                        <p className={styles.productAmount}>{`${filteredProducts.length} producten`}</p>
 
                         <div className={styles.filterGroup}>
                             <h3 className={styles.filterSubtitle}>
