@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS sessions (
   );
 
 CREATE TABLE IF NOT EXISTS products (
+  -- Seed mock products (zelfde als in ProductOverview.tsx)
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   image_url TEXT,
@@ -39,3 +40,11 @@ CREATE TABLE IF NOT EXISTS cart_items (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (user_id, product_id)
 );
+
+INSERT INTO products (id, name, image_url, price, description, category, active)
+VALUES
+  (1, 'Anijszaad', 'https://placehold.co/400', 5.52, 'Beschikbaar: 6.000 stuks', 'Specerijen', TRUE),
+  (2, 'AOSA zeewier sojasaus', 'https://placehold.co/400', 31.00, 'Beschikbaar: 4.000 stuks', 'Sauzen', TRUE),
+  (3, 'DOMAINE 2019', 'https://placehold.co/400', 31.23, 'Beschikbaar: 6.000 stuks', 'Wijn', TRUE),
+  (4, 'Whisky, New Path Edition', 'https://placehold.co/400', 37.92, 'Beschikbaar: 23.000 stuks', 'Whisky', TRUE)
+ON CONFLICT (name) DO NOTHING;

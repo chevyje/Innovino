@@ -11,6 +11,8 @@ keyless_routes: List[KeylessRoute] = [
     KeylessRoute(method="POST", path="/users/"),
     KeylessRoute(method="GET", path="/products"),
     KeylessRoute(method="GET", path="/products/"),
+    KeylessRoute(method="GET", path="/cart/"),
+    KeylessRoute(method="GET", path="/cart"),
 
 
 
