@@ -24,7 +24,7 @@ export default function CartPage() {
       <Page>
         <main className={styles.page}>
           <Card>
-            <p style={{ margin: 0 }}>Je mand is leeg.</p>
+            <p style={{ margin: 0, color: "black" }}>Je mand is leeg.</p>
           </Card>
         </main>
       </Page>
