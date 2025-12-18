@@ -7,11 +7,30 @@
     display: flex;
     padding: 2rem;
     align-items: center;
-    border-bottom: #ccc 2px solid;
 }
 
 .logo {
     height: 4rem;
     width: auto;
     user-select: none;
+}
+
+.basketLink {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    color: #f2512e;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.basketIcon {
+    width: 3rem;
+    height: auto;
+}
+
+.logoLink {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
 }
