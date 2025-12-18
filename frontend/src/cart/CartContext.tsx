@@ -1,21 +1,12 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-
-export type CartItem = {
-  id: number;
-  name: string;
-  price: number;
-  image_url?: string | null;
-  quantity: number;
-};
-
-type CartContextValue = {
-  items: CartItem[];
-  addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
-  removeItem: (id: number) => void;
-  clear: () => void;
-  total: number;
-};
+import type { CartItem, CartContextValue } from "../models/cart_models";
+import {
+  fetchCart,
+  addCartItem,
+  updateCartItem,
+  removeCartItem,
+  clearCart as clearCartApi,
+} from "../requests/cart_requests";
 
 const CartContext = createContext<CartContextValue>({
   items: [],
@@ -26,54 +17,50 @@ const CartContext = createContext<CartContextValue>({
   total: 0,
 });
 
-const STORAGE_KEY = "cart_items";
-
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  // Load cart from localStorage on mount
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed: CartItem[] = JSON.parse(saved);
-        setItems(parsed);
-      }
-    } catch {
-      setItems([]);
-    }
+    fetchCart()
+      .then((res) => setItems(res.items))
+      .catch(() => setItems([]));
   }, []);
 
-  // Persist cart to localStorage on change
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items]);
+  const refresh = () =>
+    fetchCart()
+      .then((res) => setItems(res.items))
+      .catch(() => setItems([]));
 
   const addItem = (item: Omit<CartItem, "quantity">, quantity: number = 1) => {
     setItems((prev) => {
-      const existing = prev.find((p) => p.id === item.id);
+      const existing = prev.find((p) => p.product_id === item.product_id);
       if (existing) {
         return prev.map((p) =>
-          p.id === item.id ? { ...p, quantity: p.quantity + quantity } : p
+          p.product_id === item.product_id ? { ...p, quantity: p.quantity + quantity } : p
         );
       }
       return [...prev, { ...item, quantity }];
     });
+    addCartItem(item.product_id, quantity).catch(refresh);
   };
 
   const updateQuantity = (id: number, quantity: number) => {
+    const nextQty = Math.max(0, quantity);
     setItems((prev) =>
-      prev
-        .map((p) => (p.id === id ? { ...p, quantity: Math.max(1, quantity) } : p))
-        .filter((p) => p.quantity > 0)
+      nextQty === 0
+        ? prev.filter((p) => p.product_id !== id)
+        : prev.map((p) => (p.product_id === id ? { ...p, quantity: nextQty } : p))
     );
+    const call = nextQty === 0 ? removeCartItem(id) : updateCartItem(id, nextQty);
+    call.catch(refresh);
   };
 
-  const removeItem = (id: number) => {
-    setItems((prev) => prev.filter((p) => p.id !== id));
-  };
+  const removeItem = (id: number) => updateQuantity(id, 0);
 
-  const clear = () => setItems([]);
+  const clear = () => {
+    setItems([]);
+    clearCartApi().catch(refresh);
+  };
 
   const total = useMemo(
     () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
