@@ -1,7 +1,7 @@
 .container {
     display: flex;
     flex-direction: row;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .page {
@@ -9,7 +9,7 @@
     padding: 2rem;
     background: #fafafa;
     color: #1d1d1f;
-    font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+    font-family: "Roboto", system-ui, -apple-system, sans-serif;
 }
 
 .headerRow {
@@ -39,12 +39,12 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    height: 20rem;
+    height: 24rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
 }
 
@@ -60,6 +60,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
+    height: 100%;
 }
 
 .cardTitle {
@@ -67,13 +68,20 @@
     font-size: 1.2rem;
     font-weight: 700;
     color: #1d1d1f;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    min-height: calc(1.2rem * 1.4 * 2);
 }
 
 .metaRow {
     display: flex;
     align-items: baseline;
     gap: 0.75rem;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .price {
@@ -84,9 +92,8 @@
 }
 
 .amount {
-    margin: 0;
+    margin: -0.5rem 0 0;
     color: #6b7280;
-    font-weight: 600;
     font-size: 0.95rem;
 }
 
@@ -266,17 +273,17 @@
     gap: 0.4rem;
     font-size: 0.9rem;
     color: #111;
-    background-color: white;
+    background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 1rem;
-    padding: 0.2rem;
+    padding: 0.2rem 0.4rem;
 }
 
 .checkboxLabel input[type="checkbox"] {
     width: 16px;
     height: 16px;
     accent-color: #f2512e;
-    background-color: white;
+    background-color: #fff;
 }
 
 .checkboxText {
@@ -293,3 +300,102 @@
     color: #4f5665;
 }
 
+.actionRow {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.addButton,
+.cartButton {
+    margin-top: 0.5rem;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.addButton {
+    padding: 0.25rem 1rem;
+    flex: 3;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px transparent none;
+    background-color: var(--primary-color);
+    transition: all 0.15s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.addButton:hover {
+    background-color: var(--primary-color-hover);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px);
+}
+
+.addButton:active {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transform: translateY(0);
+}
+
+.cartButton {
+    padding: 0.25rem 0.75rem;
+    flex: 1;
+    border-radius: 10px;
+    color: #111;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #111;
+    background-color: #fff;
+    transition: all 0.15s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cartButton:hover {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
+
+.cartButton:active {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    transform: translateY(0);
+    border-color: rgba(0, 0, 0, 0.5);
+}
+
+.cartIcon,
+.addedIcon {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    display: block;
+}
+
+.cartButtonAdded {
+    background-color: rgba(148, 145, 145, 0.75);
+    border-color: #9aa0aa;
+    color: #1d1d1f;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.cartButtonAdded:hover {
+    filter: brightness(0.95);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+}
+
+.cartButtonAdded:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.addedText {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}

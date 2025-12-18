@@ -4,6 +4,7 @@ import Page from "../components/Page/Page";
 import Card from "../components/Card/Card";
 import Banner from "../components/Banner/Banner";
 import ProductImages from "../components/ProductImages/ProductImages.tsx";
+import {CheckCheck, ShoppingBasket} from "lucide-react";
 
 type StorageTemp = "Kamertemperatuur" | "Koeling" | "Vriezer";
 
@@ -77,6 +78,7 @@ const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min)
 export default function ProductOverview() {
     const [products] = useState<Product[]>(mockProducts);
     const [error] = useState<string | null>(null);
+    const [cartIds, setCartIds] = useState<Set<number>>(new Set());
 
     const minPrice = useMemo(() => Math.min(...products.map((p) => p.price)), [products]);
     const maxPrice = useMemo(() => Math.max(...products.map((p) => p.price)), [products]);
@@ -133,6 +135,16 @@ export default function ProductOverview() {
         const nextMax = Math.max(v, priceRange[0] + step);
         setPriceRange([priceRange[0], nextMax]);
     };
+
+    const toggleCart = (id: number) => {
+        setCartIds((prev) => {
+            const next = new Set(prev);
+            if (next.has(id)) next.delete(id);
+            else next.add(id);
+            return next;
+        });
+    };
+
 
     const filteredProducts = useMemo(() => {
         return products.filter((p) => {
@@ -328,6 +340,46 @@ export default function ProductOverview() {
                                         <p className={styles.price}>{priceFormatter.format(product.price)}</p>
                                         {product.amount && <p className={styles.amount}>{product.amount}</p>}
                                     </div>
+
+                                    <div className={styles.actionRow}>
+                                        <button
+                                            type="button"
+                                            title="Bekijk"
+                                            className={styles.addButton}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                handleCardClick(product.id);
+                                            }}
+                                        >
+                                            Bekijk
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            title={cartIds.has(product.id) ? "Verwijder uit winkelmand" : "Voeg toe aan winkelmand"}
+                                            className={`${styles.cartButton} ${cartIds.has(product.id) ? styles.cartButtonAdded : ""}`}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                toggleCart(product.id);
+                                            }}
+                                            onMouseDown={(e) => e.stopPropagation()}
+                                            onPointerDown={(e) => e.stopPropagation()}
+                                            aria-pressed={cartIds.has(product.id)}
+                                        >
+                                            {cartIds.has(product.id) ? (
+                                                <span className={styles.addedText}>
+                                              <CheckCheck />
+                                            </span>
+                                            ) : (
+                                                <ShoppingBasket className={styles.cartIcon} />
+                                            )}
+                                        </button>
+
+                                    </div>
+
+
                                 </div>
                             </Card>
                         ))}
