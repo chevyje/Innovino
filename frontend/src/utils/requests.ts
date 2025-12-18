@@ -1,4 +1,6 @@
-export const baseUrl: string = 'http://localhost:8000/api';
+const envBase = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "");
+const fallback = import.meta.env.DEV ? "http://localhost:8000/api" : `${window.location.origin}/api`;
+export const baseUrl = envBase ?? fallback;
 
 export function getHeaders(): Headers {
     const headers: Headers = new Headers()
