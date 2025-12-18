@@ -6,11 +6,11 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 
 keyless_routes: List[KeylessRoute] = [
-    KeylessRoute(method="POST", path="/api/users/auth"),
-    KeylessRoute(method="POST", path="/api/users"),
-    KeylessRoute(method="POST", path="/api/users/"),
-    KeylessRoute(method="GET", path="/api/products"),
-    KeylessRoute(method="GET", path="/api/products/"),
+    KeylessRoute(method="POST", path="/users/auth"),
+    KeylessRoute(method="POST", path="/users"),
+    KeylessRoute(method="POST", path="/users/"),
+    KeylessRoute(method="GET", path="/products"),
+    KeylessRoute(method="GET", path="/products/"),
 
 
 

@@ -29,6 +29,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(user_router, prefix="/api")
-app.include_router(product_router, prefix="/api")
-app.include_router(cart_router, prefix="/api")
+app.include_router(user_router)
+app.include_router(product_router)
+app.include_router(cart_router)
