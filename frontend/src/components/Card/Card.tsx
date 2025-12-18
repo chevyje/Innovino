@@ -1,5 +1,5 @@
 import type {ReactNode, HTMLAttributes} from 'react';
-import Style from './Card.module.css';
+import Style from './card.module.css';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;
