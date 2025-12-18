@@ -158,7 +158,9 @@ export default function ProductOverview() {
     }, [products, priceRange, selectedTypes, selectedOrigins, selectedTemps]);
 
     const handleCardClick = (id: number) => {
-        navigate(`/products/${id}`);
+        // navigate(`/products/${id}`); wanneer we de producten dynamisch hebben
+        navigate(`/product`)
+        console.log(id);
     };
 
     const toggleCartForProduct = (product: Product) => {
