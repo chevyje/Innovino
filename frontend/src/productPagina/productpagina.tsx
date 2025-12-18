@@ -12,11 +12,13 @@ export default function ProductPagina () {
              <div className={style.page}>
                 {/* KOLOM 1 */}
                 <div className={style.column}>
-                    <Button
-                        title="← Terug"
-                        variant="secondary"
-                        onClick={() => window.history.back()}
-                    />
+                    <div className={style.terugButton}>
+                        <Button
+                            title="← Terug"
+                            variant="secondary"
+                            onClick={() => window.history.back()}
+                        />
+                    </div>
 
                     <img
                         src={testImg}
