@@ -4,8 +4,10 @@
 }
 
 .navbar {
-    margin: 2rem;
-    padding-bottom: 1rem;
+    display: flex;
+    padding: 2rem;
+    align-items: center;
+    border-bottom: #ccc 2px solid;
 }
 
 .logo {
