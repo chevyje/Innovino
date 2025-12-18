@@ -1,37 +1,3 @@
-// import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import TestPage from "./testPage/test.tsx";
-// import LoginPage from "./loginPagina/login.tsx"
-
-// function App() {
-//     return (
-//         <BrowserRouter>
-//             <Routes>
-//                 <Route path="/" element={<LoginPage />} />
-//                 <Route path="/test" element={<TestPage />} />
-//             </Routes>
-//         </BrowserRouter>
-//     );
-// }
-
-// export default App;
-// import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import LoginPage from "./loginPagina/login.tsx";
-// import TestPage from "./testPage/test.tsx";
-// import ProductOverview from "./products/ProductOverview";
-// import ProductDetail from "./products/ProductDetail";
-
-// export default function App() {
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         <Route path="/" element={<LoginPage />} />
-//         <Route path="/products" element={<ProductOverview sessionId="" />} />
-//         <Route path="/products/:id" element={<ProductDetail sessionId="" />} />
-//         <Route path="/test" element={<TestPage />} />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
 import { BrowserRouter, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCookie } from "./utils/cookies";
@@ -62,7 +28,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
-      <Route path="/products" element={<ProductOverview sessionId={sessionId} />} />
+      <Route path="/products" element={<ProductOverview />} />
       <Route path="/products/:id" element={<ProductDetailRoute sessionId={sessionId} />} />
       <Route path="/test" element={<TestPage />} />
       <Route path="/cart" element={<CartPage />} />

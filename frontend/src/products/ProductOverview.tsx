@@ -1,10 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./productOverview.module.css";
 import Page from "../components/Page/Page";
 import Card from "../components/Card/Card";
 import Banner from "../components/Banner/Banner";
 import ProductImages from "../components/ProductImages/ProductImages.tsx";
-import {CheckCheck, ShoppingBasket} from "lucide-react";
+import { CheckCheck, ShoppingBasket } from "lucide-react";
+import { useCart } from "../cart/CartContext";
 
 type StorageTemp = "Kamertemperatuur" | "Koeling" | "Vriezer";
 
@@ -76,14 +78,17 @@ const step = 0.01;
 const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
 
 export default function ProductOverview() {
+    const navigate = useNavigate();
+    const { items: cartItems, addItem, removeItem } = useCart();
+
     const [products] = useState<Product[]>(mockProducts);
     const [error] = useState<string | null>(null);
-    const [cartIds, setCartIds] = useState<Set<number>>(new Set());
 
     const minPrice = useMemo(() => Math.min(...products.map((p) => p.price)), [products]);
     const maxPrice = useMemo(() => Math.max(...products.map((p) => p.price)), [products]);
-
     const [priceRange, setPriceRange] = useState<[number, number]>([minPrice, maxPrice]);
+
+    const inCartIds = useMemo(() => new Set(cartItems.map((i) => i.product_id)), [cartItems]);
 
     const typeOptions = useMemo(
         () =>
@@ -95,17 +100,17 @@ export default function ProductOverview() {
 
     const originOptions = useMemo(
         () =>
-            Array.from(
-                new Set(products.map((p) => p.origin_country).filter(Boolean) as string[])
-            ).sort((a, b) => a.localeCompare(b, "nl-NL")),
+            Array.from(new Set(products.map((p) => p.origin_country).filter(Boolean) as string[])).sort(
+                (a, b) => a.localeCompare(b, "nl-NL")
+            ),
         [products]
     );
 
     const tempOptions = useMemo(
         () =>
-            Array.from(
-                new Set(products.map((p) => p.storage_temp).filter(Boolean) as StorageTemp[])
-            ).sort((a, b) => a.localeCompare(b, "nl-NL")),
+            Array.from(new Set(products.map((p) => p.storage_temp).filter(Boolean) as StorageTemp[])).sort(
+                (a, b) => a.localeCompare(b, "nl-NL")
+            ),
         [products]
     );
 
@@ -113,7 +118,7 @@ export default function ProductOverview() {
     const [selectedOrigins, setSelectedOrigins] = useState<Set<string>>(new Set());
     const [selectedTemps, setSelectedTemps] = useState<Set<string>>(new Set());
 
-    const toggleSetValue = (setter: React.Dispatch<React.SetStateAction<Set<string>>>, value: string) => {
+    const toggleSetValue = (setter: Dispatch<SetStateAction<Set<string>>>, value: string) => {
         setter((prev) => {
             const next = new Set(prev);
             if (next.has(value)) next.delete(value);
@@ -136,52 +141,50 @@ export default function ProductOverview() {
         setPriceRange([priceRange[0], nextMax]);
     };
 
-    const toggleCart = (id: number) => {
-        setCartIds((prev) => {
-            const next = new Set(prev);
-            if (next.has(id)) next.delete(id);
-            else next.add(id);
-            return next;
-        });
-    };
-
-
     const filteredProducts = useMemo(() => {
         return products.filter((p) => {
             const inPrice = p.price >= priceRange[0] && p.price <= priceRange[1];
 
-            const typeOk =
-                selectedTypes.size === 0 ? true : (p.category ? selectedTypes.has(p.category) : false);
+            const typeOk = selectedTypes.size === 0 ? true : p.category ? selectedTypes.has(p.category) : false;
 
             const originOk =
-                selectedOrigins.size === 0
-                    ? true
-                    : (p.origin_country ? selectedOrigins.has(p.origin_country) : false);
+                selectedOrigins.size === 0 ? true : p.origin_country ? selectedOrigins.has(p.origin_country) : false;
 
             const tempOk =
-                selectedTemps.size === 0
-                    ? true
-                    : (p.storage_temp ? selectedTemps.has(p.storage_temp) : false);
+                selectedTemps.size === 0 ? true : p.storage_temp ? selectedTemps.has(p.storage_temp) : false;
 
             return inPrice && typeOk && originOk && tempOk;
         });
     }, [products, priceRange, selectedTypes, selectedOrigins, selectedTemps]);
 
     const handleCardClick = (id: number) => {
-        window.location.href = `/products/${id}`;
+        navigate(`/products/${id}`);
     };
 
-    const minPercent =
-        maxPrice === minPrice ? 0 : ((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100;
-    const maxPercent =
-        maxPrice === minPrice ? 100 : ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100;
+    const toggleCartForProduct = (product: Product) => {
+        const isInCart = inCartIds.has(product.id);
+        if (isInCart) {
+            removeItem(product.id);
+            return;
+        }
+        addItem(
+            {
+                product_id: product.id,
+                name: product.name,
+                price: product.price,
+                image_url: product.image_url ?? null,
+            } as any,
+            1
+        );
+    };
+
+    const minPercent = maxPrice === minPrice ? 0 : ((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100;
+    const maxPercent = maxPrice === minPrice ? 100 : ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100;
 
     return (
         <Page>
             <main className={styles.page}>
-                <div className={styles.headerRow}>
-
-                </div>
+                <div className={styles.headerRow}></div>
 
                 {error && (
                     <Banner title="Foutmelding" variant="warning">
@@ -321,68 +324,70 @@ export default function ProductOverview() {
                     </section>
 
                     <section className={styles.grid}>
-                        {filteredProducts.map((product) => (
-                            <Card
-                                key={product.id}
-                                className={styles.card}
-                                role="button"
-                                tabIndex={0}
-                                onClick={() => handleCardClick(product.id)}
-                                onKeyDown={(e) => e.key === "Enter" && handleCardClick(product.id)}
-                            >
-                                {product.image_url && (
-                                    <ProductImages images={[product.image_url]} alt={product.name} border={false}/>
-                                )}
-                                <div className={styles.cardBody}>
-                                    <h2 className={styles.cardTitle}>{product.name}</h2>
+                        {filteredProducts.map((product) => {
+                            const isInCart = inCartIds.has(product.id);
 
-                                    <div className={styles.metaRow}>
-                                        <p className={styles.price}>{priceFormatter.format(product.price)}</p>
-                                        {product.amount && <p className={styles.amount}>{product.amount}</p>}
+                            return (
+                                <Card
+                                    key={product.id}
+                                    className={styles.card}
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={() => handleCardClick(product.id)}
+                                    onKeyDown={(e) => e.key === "Enter" && handleCardClick(product.id)}
+                                >
+                                    {product.image_url && (
+                                        <ProductImages images={[product.image_url]} alt={product.name} border={false} />
+                                    )}
+
+                                    <div className={styles.cardBody}>
+                                        <h2 className={styles.cardTitle}>{product.name}</h2>
+
+                                        <div className={styles.metaRow}>
+                                            <p className={styles.price}>{priceFormatter.format(product.price)}</p>
+                                            {product.amount && <p className={styles.amount}>{product.amount}</p>}
+                                        </div>
+
+                                        <div className={styles.actionRow}>
+                                            <button
+                                                type="button"
+                                                title="Bekijk"
+                                                className={styles.addButton}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    handleCardClick(product.id);
+                                                }}
+                                            >
+                                                Bekijk
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                title={isInCart ? "Verwijder uit winkelmand" : "Voeg toe aan winkelmand"}
+                                                className={`${styles.cartButton} ${isInCart ? styles.cartButtonAdded : ""}`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    toggleCartForProduct(product);
+                                                }}
+                                                onMouseDown={(e) => e.stopPropagation()}
+                                                onPointerDown={(e) => e.stopPropagation()}
+                                                aria-pressed={isInCart}
+                                            >
+                                                {isInCart ? (
+                                                    <span className={styles.addedText}>
+                            <CheckCheck />
+                          </span>
+                                                ) : (
+                                                    <ShoppingBasket className={styles.cartIcon} />
+                                                )}
+                                            </button>
+                                        </div>
                                     </div>
-
-                                    <div className={styles.actionRow}>
-                                        <button
-                                            type="button"
-                                            title="Bekijk"
-                                            className={styles.addButton}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                handleCardClick(product.id);
-                                            }}
-                                        >
-                                            Bekijk
-                                        </button>
-
-                                        <button
-                                            type="button"
-                                            title={cartIds.has(product.id) ? "Verwijder uit winkelmand" : "Voeg toe aan winkelmand"}
-                                            className={`${styles.cartButton} ${cartIds.has(product.id) ? styles.cartButtonAdded : ""}`}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                toggleCart(product.id);
-                                            }}
-                                            onMouseDown={(e) => e.stopPropagation()}
-                                            onPointerDown={(e) => e.stopPropagation()}
-                                            aria-pressed={cartIds.has(product.id)}
-                                        >
-                                            {cartIds.has(product.id) ? (
-                                                <span className={styles.addedText}>
-                                              <CheckCheck />
-                                            </span>
-                                            ) : (
-                                                <ShoppingBasket className={styles.cartIcon} />
-                                            )}
-                                        </button>
-
-                                    </div>
-
-
-                                </div>
-                            </Card>
-                        ))}
+                                </Card>
+                            );
+                        })}
                     </section>
                 </div>
             </main>
