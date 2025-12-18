@@ -4,12 +4,27 @@
 }
 
 .navbar {
-    margin: 2rem;
-    padding-bottom: 1rem;
+    display: flex;
+    padding: 2rem;
+    align-items: center;
 }
 
 .logo {
-    height: 6rem;
+    height: 4rem;
     width: auto;
     user-select: none;
+}
+
+.basketLink {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    color: #f2512e;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.basketIcon {
+    width: 3rem;
+    height: auto;
 }

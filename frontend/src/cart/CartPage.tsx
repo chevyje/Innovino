@@ -8,11 +8,11 @@ export default function CartPage() {
     <main style={{ padding: "2rem" }}>
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
         <div>
-          <h1 style={{ margin: 0 }}>Winkelmand</h1>
+          <h1 style={{ margin: 0, color: "black" }}>Winkelmand</h1>
           <p style={{ margin: 0, color: "#555" }}>{items.length} items</p>
         </div>
         <div style={{ display: "flex", gap: "0.5rem" }}>
-          <Link to="/products" style={{ textDecoration: "none", padding: "0.5rem 0.75rem", border: "1px solid #ccc", borderRadius: "6px" }}>
+          <Link to="/products" style={{ textDecoration: "none", padding: "0.5rem 0.75rem", border: "1px solid #ccc", borderRadius: "6px", color: "black" }}>
             ← Verder winkelen
           </Link>
           {items.length > 0 && (
