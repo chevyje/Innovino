@@ -20,6 +20,7 @@ keyless_routes: List[KeylessRoute] = [
 ]
 
 async def handle_api_key_middleware(request: Request, call_next):
+    print("PATH:", request.url.path, "METHOD:", request.method)  # debug
     # Check if route is in the exception and continue
     for x in keyless_routes:
         if x.method == request.method and x.path == request.url.path:
