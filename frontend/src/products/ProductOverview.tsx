@@ -3,6 +3,7 @@ import styles from "./productOverview.module.css";
 import Page from "../components/Page/Page";
 import Card from "../components/Card/Card";
 import Banner from "../components/Banner/Banner";
+import ProductImages from "../components/ProductImages/ProductImages.tsx";
 
 type StorageTemp = "Kamertemperatuur" | "Koeling" | "Vriezer";
 
@@ -318,12 +319,7 @@ export default function ProductOverview() {
                                 onKeyDown={(e) => e.key === "Enter" && handleCardClick(product.id)}
                             >
                                 {product.image_url && (
-                                    <img
-                                        src={product.image_url}
-                                        alt={product.name}
-                                        className={styles.cardImage}
-                                        loading="lazy"
-                                    />
+                                    <ProductImages images={[product.image_url]} alt={product.name} border={false}/>
                                 )}
                                 <div className={styles.cardBody}>
                                     <h2 className={styles.cardTitle}>{product.name}</h2>

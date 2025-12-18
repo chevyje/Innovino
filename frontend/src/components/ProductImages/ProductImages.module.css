@@ -4,10 +4,9 @@
 }
 
 .imageWrapper {
-    border: 3px solid #CCCCCC;
-    border-radius: 15px;
     overflow: hidden;
     background-color: white;
+    border-radius: 15px;
 }
 
 .image {
@@ -16,4 +15,8 @@
     object-fit: cover;
     display: block;
     user-select: none;
+}
+
+.border {
+    border: 3px solid #CCCCCC;
 }
