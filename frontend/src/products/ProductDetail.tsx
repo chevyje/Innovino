@@ -61,16 +61,21 @@ export default function ProductDetail({ productId, sessionId }: ProductDetailPro
     const totalExcl = product.price * quantity;
     const totalIncl = priceIncl * quantity;
 
-    const handleAddToCart = () => {
-        addItem({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image_url: product.image_url,
-        }, quantity);
-        setConfirmation('Product toegevoegd aan winkelmand!');
-        setTimeout(() => setConfirmation(null), 2500);
-    };
+// in handleAddToCart:
+const handleAddToCart = () => {
+  addItem(
+    {
+      product_id: product.id,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url,
+    },
+    quantity
+  );
+  setConfirmation("Product toegevoegd aan winkelmand!");
+  setTimeout(() => setConfirmation(null), 2500);
+};
+
 
     return (
         <main className={styles.page}>

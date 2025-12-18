@@ -15,17 +15,3 @@
     width: auto;
     user-select: none;
 }
-
-.basketLink {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    color: #f2512e;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.basketIcon {
-    width: 3rem;
-    height: auto;
-}

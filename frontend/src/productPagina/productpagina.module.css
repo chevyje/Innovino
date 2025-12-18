@@ -5,6 +5,11 @@
     padding: 40px;
 }
 
+.terugButton {
+    width: 50%;
+    height: fit-content;
+}
+
 .column {
     display: flex;
     flex-direction: column;
@@ -42,14 +47,19 @@
 
 .priceInfo {
     text-align: center;
+    color: black;
+}
+
+.priceInfo p {
+    margin: 0;
 }
 
 .price {
-    font-size: 20px;
+    font-size: 40px;
     font-weight: bold;
 }
 
 .amount {
-    font-size: 14px;
+    font-size: 20px;
     color: #555;
 }
