@@ -21,6 +21,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
 body {
   margin: 0;
   min-width: 320px;
