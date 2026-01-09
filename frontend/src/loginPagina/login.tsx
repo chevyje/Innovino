@@ -1,5 +1,83 @@
+// import { useState, type FormEvent } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { useMutation } from "@tanstack/react-query";
+
+
+// import Style from "./login.module.css";
+// import type { LoginRequest } from "../models/user_model.ts";
+// import { authenticate } from "../requests/user_requests.ts";
+// import Logo from "../assets/Cuimed-logo.jpg";
+
+// import TextInput from "../components/TextInput/TextInput";
+// import CheckBox from "../components/CheckBox/CheckBox";
+// import Button from "../components/Button/Button";
+// import Banner from "../components/Banner/Banner";
+// import Card from "../components/Card/Card";
+// import Link from "../components/Link/Link";
+
+// export default function LoginPage() {
+//     const [error, setError] = useState<string | null>(null);
+//     const navigate = useNavigate();
+
+//     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+//         event.preventDefault();
+
+//         const formData = new FormData(event.currentTarget);
+//         const username = String(formData.get("username") ?? "");
+//         const password = String(formData.get("password") ?? "");
+
+//         const data: LoginRequest = { username, password };
+
+//         setError(null);
+
+//         try {
+//             const res = await authenticate(data);
+
+//             if (res?.session?.session_id) {
+//                 navigate("/products");
+//                 return;
+//             }
+
+//             setError("Controleer je gebruikersnaam en wachtwoord.");
+//         } catch {
+//             setError("Controleer je gebruikersnaam en wachtwoord.");
+//         }
+//     }
+
+//     return (
+//         <div className={Style.container}>
+//             <img src={Logo} className={Style.logo} alt="Cuimed logo" />
+//             <div className={Style.loginContainer}>
+//                 {error && (
+//                     <div className={Style.errorContainer}>
+//                         <Banner title="Inloggen mislukt" variant="warning">
+//                             {error}
+//                         </Banner>
+//                     </div>
+//                 )}
+
+//                 <Card>
+//                     <form onSubmit={handleSubmit} className={Style.loginForm}>
+//                         <TextInput label="Gebruikersnaam" name="username" />
+//                         <TextInput label="Wachtwoord" name="password" type="password" />
+
+//                         <div className={Style.optionsRow}>
+//                             <CheckBox name="remember" label="Gegevens onthouden" />
+//                             <Link title="Wachtwoord vergeten?" path="/wachtwoord-vergeten" />
+//                         </div>
+
+//                         <div className={Style.btnContainer}>
+//                             <Button title="Log in" type="submit" />
+//                         </div>
+//                     </form>
+//                 </Card>
+//             </div>
+//         </div>
+//     );
+// }
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 import Style from "./login.module.css";
 import type { LoginRequest } from "../models/user_model.ts";
@@ -14,62 +92,64 @@ import Card from "../components/Card/Card";
 import Link from "../components/Link/Link";
 
 export default function LoginPage() {
-    const [error, setError] = useState<string | null>(null);
-    const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault();
+  const loginMutation = useMutation({
+    mutationFn: authenticate,
+    onSuccess: (res) => {
+      if (res?.session?.session_id) {
+        navigate("/products");
+        return;
+      }
+      setError("Controleer je gebruikersnaam en wachtwoord.");
+    },
+    onError: () => {
+      setError("Controleer je gebruikersnaam en wachtwoord.");
+    },
+  });
 
-        const formData = new FormData(event.currentTarget);
-        const username = String(formData.get("username") ?? "");
-        const password = String(formData.get("password") ?? "");
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-        const data: LoginRequest = { username, password };
+    const formData = new FormData(event.currentTarget);
+    const username = String(formData.get("username") ?? "");
+    const password = String(formData.get("password") ?? "");
 
-        setError(null);
+    const data: LoginRequest = { username, password };
 
-        try {
-            const res = await authenticate(data);
+    setError(null);
+    loginMutation.mutate(data);
+  }
 
-            if (res?.session?.session_id) {
-                navigate("/products");
-                return;
-            }
+  return (
+    <div className={Style.container}>
+      <img src={Logo} className={Style.logo} alt="Cuimed logo" />
+      <div className={Style.loginContainer}>
+        {error && (
+          <div className={Style.errorContainer}>
+            <Banner title="Inloggen mislukt" variant="warning">
+              {error}
+            </Banner>
+          </div>
+        )}
 
-            setError("Controleer je gebruikersnaam en wachtwoord.");
-        } catch {
-            setError("Controleer je gebruikersnaam en wachtwoord.");
-        }
-    }
+        <Card>
+          <form onSubmit={handleSubmit} className={Style.loginForm}>
+            <TextInput label="Gebruikersnaam" name="username" />
+            <TextInput label="Wachtwoord" name="password" type="password" />
 
-    return (
-        <div className={Style.container}>
-            <img src={Logo} className={Style.logo} alt="Cuimed logo" />
-            <div className={Style.loginContainer}>
-                {error && (
-                    <div className={Style.errorContainer}>
-                        <Banner title="Inloggen mislukt" variant="warning">
-                            {error}
-                        </Banner>
-                    </div>
-                )}
-
-                <Card>
-                    <form onSubmit={handleSubmit} className={Style.loginForm}>
-                        <TextInput label="Gebruikersnaam" name="username" />
-                        <TextInput label="Wachtwoord" name="password" type="password" />
-
-                        <div className={Style.optionsRow}>
-                            <CheckBox name="remember" label="Gegevens onthouden" />
-                            <Link title="Wachtwoord vergeten?" path="/wachtwoord-vergeten" />
-                        </div>
-
-                        <div className={Style.btnContainer}>
-                            <Button title="Log in" type="submit" />
-                        </div>
-                    </form>
-                </Card>
+            <div className={Style.optionsRow}>
+              <CheckBox name="remember" label="Gegevens onthouden" />
+              <Link title="Wachtwoord vergeten?" path="/wachtwoord-vergeten" />
             </div>
-        </div>
-    );
+
+            <div className={Style.btnContainer}>
+              <Button title="Log in" type="submit" disabled={loginMutation.isPending} />
+            </div>
+          </form>
+        </Card>
+      </div>
+    </div>
+  );
 }

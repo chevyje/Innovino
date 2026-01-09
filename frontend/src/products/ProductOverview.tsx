@@ -163,22 +163,38 @@ export default function ProductOverview() {
         console.log(id);
     };
 
-    const toggleCartForProduct = (product: Product) => {
-        const isInCart = inCartIds.has(product.id);
-        if (isInCart) {
-            removeItem(product.id);
-            return;
-        }
-        addItem(
-            {
-                product_id: product.id,
-                name: product.name,
-                price: product.price,
-                image_url: product.image_url ?? null,
-            } as any,
-            1
-        );
-    };
+    // const toggleCartForProduct = (product: Product) => {
+    //     const isInCart = inCartIds.has(product.id);
+    //     if (isInCart) {
+    //         removeItem(product.id);
+    //         return;
+    //     }
+    //     addItem(
+    //         {
+    //             product_id: product.id,
+    //             name: product.name,
+    //             price: product.price,
+    //             image_url: product.image_url ?? null,
+    //         } as any,
+    //         1
+    //     );
+    // };
+const toggleCartForProduct = async (product: Product) => {
+  const isInCart = inCartIds.has(product.id);
+  if (isInCart) {
+    await removeItem(product.id);
+    return;
+  }
+  await addItem(
+    {
+      product_id: product.id,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url ?? null,
+    } as any,
+    1
+  );
+};
 
     const minPercent = maxPrice === minPrice ? 0 : ((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100;
     const maxPercent = maxPrice === minPrice ? 100 : ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100;
@@ -368,11 +384,16 @@ export default function ProductOverview() {
                                                 type="button"
                                                 title={isInCart ? "Verwijder uit winkelmand" : "Voeg toe aan winkelmand"}
                                                 className={`${styles.cartButton} ${isInCart ? styles.cartButtonAdded : ""}`}
+                                                // onClick={(e) => {
+                                                //     e.preventDefault();
+                                                //     e.stopPropagation();
+                                                //     toggleCartForProduct(product);
+                                                // }}
                                                 onClick={(e) => {
-                                                    e.preventDefault();
-                                                    e.stopPropagation();
-                                                    toggleCartForProduct(product);
-                                                }}
+  e.preventDefault();
+  e.stopPropagation();
+  void toggleCartForProduct(product);
+}}
                                                 onMouseDown={(e) => e.stopPropagation()}
                                                 onPointerDown={(e) => e.stopPropagation()}
                                                 aria-pressed={isInCart}
