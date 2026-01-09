@@ -62,8 +62,21 @@ export default function ProductDetail({ productId, sessionId }: ProductDetailPro
     const totalIncl = priceIncl * quantity;
 
 // in handleAddToCart:
-const handleAddToCart = () => {
-  addItem(
+// const handleAddToCart = () => {
+//   addItem(
+//     {
+//       product_id: product.id,
+//       name: product.name,
+//       price: product.price,
+//       image_url: product.image_url,
+//     },
+//     quantity
+//   );
+//   setConfirmation("Product toegevoegd aan winkelmand!");
+//   setTimeout(() => setConfirmation(null), 2500);
+// };
+const handleAddToCart = async () => {
+  await addItem(
     {
       product_id: product.id,
       name: product.name,
@@ -75,7 +88,6 @@ const handleAddToCart = () => {
   setConfirmation("Product toegevoegd aan winkelmand!");
   setTimeout(() => setConfirmation(null), 2500);
 };
-
 
     return (
         <main className={styles.page}>

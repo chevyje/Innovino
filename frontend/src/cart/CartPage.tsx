@@ -11,7 +11,7 @@ const VAT_RATE = 0.21;
 const SHIPPING_EXCL = 9.09;
 
 export default function CartPage() {
-  const { items, updateQuantity } = useCart();
+const { items, updateQuantity, removeItem } = useCart();
 
   const subtotalExcl = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const subtotalIncl = subtotalExcl * (1 + VAT_RATE);
@@ -52,16 +52,24 @@ export default function CartPage() {
                           <p className={styles.itemPrice}>{formatCurrency(item.price)}</p>
                           <span className={styles.stockOk}>Op voorraad</span>
                         </div>
-                        <div className={styles.qtyBlock}>
-                          <span className={styles.qtyLabel}>Aantal:</span>
-                          <input
-                            className={styles.qtyInput}
-                            type="number"
-                            min={0}
-                            value={item.quantity}
-                            onChange={(e) => updateQuantity(item.product_id, Number(e.target.value))}
-                          />
-                        </div>
+<div className={styles.qtyBlock}>
+  <span className={styles.qtyLabel}>Aantal:</span>
+  <input
+    className={styles.qtyInput}
+    type="number"
+    min={1}
+    value={item.quantity}
+    onChange={(e) => void updateQuantity(item.product_id, Number(e.target.value))}
+  />
+  <button
+    type="button"
+    className={styles.removeButton}
+    onClick={() => void removeItem(item.product_id)}
+    aria-label={`Verwijder ${item.name}`}
+  >
+    ×
+  </button>
+</div>
                       </div>
                     );
                   })}
