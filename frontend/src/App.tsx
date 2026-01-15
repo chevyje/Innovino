@@ -7,6 +7,7 @@ import ProductPagina from "./productPagina/productpagina.tsx";
 import ProductOverview from "./products/ProductOverview";
 import ProductDetail from "./products/ProductDetail";
 import CartPage from "./cart/CartPage";
+import AccountPagina from "./accountPagina/accountPagina.tsx";
 
 function ProductDetailRoute({ sessionId }: { sessionId: string }) {
   const { id } = useParams();
@@ -33,6 +34,7 @@ function AppRoutes() {
       <Route path="/test" element={<TestPage />} />
       <Route path="/cart" element={<CartPage />} />
       <Route path="/product" element={<ProductPagina />} />
+      <Route path="/account" element={<AccountPagina />} />
     </Routes>
   );
 }

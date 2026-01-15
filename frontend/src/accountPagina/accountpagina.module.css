@@ -1,0 +1,22 @@
+.actionRowContainer {
+    position: fixed;
+    left: 2rem;
+    bottom: 5rem;
+    z-index: 1000;
+}
+
+.contentContainer {
+    margin: 2rem;
+}
+
+.inputContainer {
+    width: 20rem;
+}
+
+.accountTitle {
+    color: black;
+}
+
+.actionRow {
+    display: flex;
+}
